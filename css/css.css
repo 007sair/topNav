@@ -28,7 +28,8 @@
  * name : 导航样式
  * version : 2.0
  */
-.m_nav { position: relative; width: 100%; z-index: 100; min-height: 44px; background: rgba(239,75,75,0.9); max-width: 640px; }
+.m_nav { position: absolute; top: 0; left: 0; width: 100%; z-index: 100; min-height: 44px; background: rgba(239,75,75,0.9); max-width: 640px; }
+
 .m_iscoll { position: absolute; left: 0; top: 0; right: 0; overflow: hidden;}
 .m_iscoll a.openbtn { display: none; position: absolute; width: 43px; height: 43px; line-height: 43px; top: 0; right: 0; z-index: 5; text-align: center; color: #9e9e9e; background: rgba(239,75,75,0.9); border-left: none; }
 .m_iscoll a.openbtn:after { -webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg); -webkit-transition: all ease 0.3s; -moz-transition: all ease 0.3s; -ms-transition: all ease 0.3s; transition: all ease 0.3s; display: block; content: ' '; width: 16px; height: 16px; margin: 14px auto; background: url(../images/arrow2.png); background-size: 16px; overflow: hidden; }
@@ -47,3 +48,9 @@
 .m_navmask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 90; background: rgba(0, 0, 0, 0.5); }
 .mnavtransno { -webkit-transform: translate(0px, 0px) translateZ(0px) !important; -moz-transform: translate(0px, 0px) translateZ(0px) !important; -ms-transform: translate(0px, 0px) translateZ(0px) !important; transform: translate(0px, 0px) translateZ(0px) !important; white-space: normal !important; }
 .m_open .m_navtext {display: block;height: 44px;line-height: 44px;padding-left: 15px;font-size: 12px;margin-left: 0; color: #fff;}
+
+
+.m_nav.fixed{ position: fixed;top: 0;}
+.naver{	position: relative;	top: 0;	left: 0; width: 100%;}
+.sticky {position: -webkit-sticky; position: sticky; top: 0;}
+.placeholder{height: 44px;}

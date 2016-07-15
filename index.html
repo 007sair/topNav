@@ -23,14 +23,19 @@
 
 	<div class="banner">banner</div>
 
-	<nav class="m_nav">
-		<div class="m_iscoll" id="navscroll">
-            <ul>
-            	<!-- 代码在从数组中被打乱插入 -->
-            </ul>
-            <a href="javascript:;" class="openbtn"></a>
-        </div>
-	</nav>
+	<div class="naver">
+		<div class="placeholder"></div>
+		<nav class="m_nav">
+			<div class="m_iscoll" id="navscroll">
+	            <ul>
+	            	<!-- 代码在从数组中被打乱插入 -->
+	            </ul>
+	            <a href="javascript:;" class="openbtn"></a>
+	        </div>
+		</nav>
+	</div>
+	
+	
 	
 	<section class="block0">
 		<h3>这是标题</h3>
@@ -94,6 +99,7 @@ $(function(){
 	
 	//测试代码逻辑
 	var arr_html = [
+		'<li id="testID"><span>ssss</span></li>',
 		'<li><a href="#"><span>回到顶部</span></a></li>',
 		'<li><a href="#1" title=""><span>11111</span></a></li>',
 		'<li><a href="http://www.baidu.com" title=""><span>百度</span></a></li>',

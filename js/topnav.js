@@ -95,7 +95,7 @@
 				var $li = $(this),
 					hash = $li.find('a').attr('href');
 
-				if (hash.indexOf('#') > -1 && $(hash).length > 0) {
+				if (hash && hash.indexOf('#') > -1 && $(hash).length > 0) {
 					$(hash).addClass(_this.opt.className);
 					_this.arr_anchorID.push($(hash).attr('id'));	//创建真实锚点元素的id数组
 				};
@@ -126,9 +126,9 @@
 			this.$li.each(function(index, el) {
 				var $li = $(this),
 					hash = $li.find('a').attr('href'),
-					id = hash.split('#')[1];
+					id = hash ? hash.split('#')[1] : '';
 
-				if (hash.indexOf('#') > -1 && _this.isAnchor(hash)) { //是锚点链接 && 在当前页面内匹配到锚点id
+				if (hash && hash.indexOf('#') > -1 && _this.isAnchor(hash)) { //是锚点链接 && 在当前页面内匹配到锚点id
 					anchorIndex++; //为trueIndex 真实锚点位置
 					var thisAnchor = $(hash),
 						top = thisAnchor.offset().top,
@@ -160,6 +160,10 @@
 		bindEvent: function(){
 			var _this = this;
 
+			if (gtIOS6()) {
+				this.$ele.parent().addClass('sticky');
+			};	
+
 			//绑定滚动
 			var stop = _this.debounce(function() {
 				// console.log('debounce');
@@ -176,8 +180,10 @@
 				// console.log('scrolling')
 				_this.$body.addClass('disable-event');
 				_this.iCurTop = $(this).scrollTop();
-				if (_this.iCurTop + _this.opt.top > _this.offTop) {
-					_this.fixed();
+				if (_this.iCurTop + _this.opt.top >= _this.offTop) {
+					if (!gtIOS6()) {
+						_this.fixed()
+					}
 				} else {
 					_this.collapse();
 					_this._static();
@@ -188,10 +194,12 @@
 			//第一次打开页面时页面的scrollTop不一定为0且不一定没有锚点 需初始化一下当前导航切换
 			fnScroll();
 
+
 			$(window).scroll(function(){
 				// requestAnimationFrame(fnScroll);
 				fnScroll()
 			});
+
 
 			//导航锚点点击事件
 			this.$eleChild.on('click', 'li', function(index, el) {
@@ -219,9 +227,10 @@
 
 			//点击更多
 			this.openbtn.on('click', function() {
+				document.title = _this.isFixed;
 				if (_this.isFixed !== 1) {
-					var first = _this.arr_anchorPos[_this.findMin(_this.arr_anchorPos)];
-					$(window).scrollTop(first - _this.iHeight + 2 - _this.opt.top);
+					// var first = _this.arr_anchorPos[_this.findMin(_this.arr_anchorPos)];
+					// $(window).scrollTop(first - _this.iHeight + 2 - _this.opt.top);
 				}
 				if (_this.$ele.data('open') == 1) {
 					_this.collapse();
@@ -291,22 +300,14 @@
 		},
 		fixed: function(){
 			if (this.isFixed !== 0) return false;
-			this.showPlace();
-			this.$ele.css({
-				position: 'fixed',
-				top: this.opt.top + 'px'
-			});
+			this.$ele.addClass('fixed');
 			this.$ele.data('fixed', 1);
 			this.isFixed = 1;
 			// console.log('fixed', this.isFixed);
 		},
 		_static: function(){
 			if (this.isFixed == 0) return false;
-			this.hidePlace();
-			this.$ele.css({
-				position: 'relative',
-				top: 0
-			});
+			this.$ele.removeClass('fixed');
 			this.$ele.data('fixed', 0);
 			this.isFixed = 0;
 			// console.log('_static', this.isFixed);
@@ -444,6 +445,40 @@
 			}, false);
 		}
 	};
+
+	function gtIOS6() {
+		var ua = window.navigator.userAgent,
+			ios = !! ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+		return ios;
+	}
+
+	var sticky, fixed;
+    var tmp = document.createElement("div"),
+        prefix = ["-webkit-", "-ms-", "-o-", "-moz-", ""],
+        has = function(val) {
+            var actual = "";
+            if (window.getComputedStyle) {
+                actual = window.getComputedStyle(tmp).getPropertyValue("position");
+            } else {
+                actual = tmp.currentStyle.getAttribute("position");
+            }
+            return actual.indexOf(val) !== -1;
+        };
+
+    document.body.appendChild(tmp);
+
+    for(var i = 0; i<prefix.length; i++) {
+        tmp.style.cssText = "position:"+prefix[i]+"sticky;visibility:hidden;";
+        if (sticky = has("sticky")) break;
+    }
+    console.log(sticky); // 
+
+    tmp.style.cssText = "position:fixed;width:0;height:0;";
+    console.log(fixed = has("fixed")); // IE6 也为 fixed, 但实际上没有效果
+
+    setTimeout(function(){
+    	$('#testID').text(sticky + '....' + (fixed = has("fixed")))
+    },2000)
 
 	$.fn.mnav = function(options) {
 		return new Naver(this, options);
