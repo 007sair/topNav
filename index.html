@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection"content="telephone=no, email=no" />
+<title>new Anchor</title>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/css.css?0613">
+<style>
+.wrapper{ max-width: 640px; margin: 0 auto;}
+.wrapper section{ height: 500px; font-size: 40px; text-align: center; overflow: hidden; border: 1px solid #000;}
+.wrapper section h3{ font-size: 16px; background: pink; display: block; margin: 5px 50px 0 50px; height: 40px; line-height: 40px;}
+.wrapper .banner{ height: 200px; border: 1px solid #000;}
+.disable-event{pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+	<div class="banner">banner</div>
+
+	<nav class="m_nav">
+		<div class="m_iscoll" id="navscroll">
+            <ul>
+            	<!-- 代码在从数组中被打乱插入 -->
+            </ul>
+            <a href="javascript:;" class="openbtn"></a>
+        </div>
+	</nav>
+	
+	<section class="block0">
+		<h3>这是标题</h3>
+		多余的第一块
+	</section>
+	<section class="block1" id="1">
+		<h3>这是标题</h3>
+		第一个模块
+	</section>	 
+	<section class="block2" id="2">
+		<h3>这是标题</h3>
+		第二个模块
+	</section>
+	<section class="block3" id="3">
+		<h3>这是标题</h3>
+		第三个模块
+	</section>
+	<section class="block4" id="4">
+		<h3>这是标题</h3>
+		第四个模块
+	</section>
+	<section class="block4" id="cuowu">
+		<h3>这是标题</h3>
+		Error模块
+	</section>
+	<section class="block5" id="5">
+		<h3>这是标题</h3>
+		第五个模块
+	</section>
+	<section class="block6" id="6">
+		<h3>这是标题</h3>
+		第六个模块
+	</section>
+	<section class="block7" id="7">
+		<h3>这是标题</h3>
+		第七个模块
+	</section>
+	<section class="block8" id="8" style="height:200px;">
+		<h3>这是标题</h3>
+		第八个模块
+	</section>
+	<section class="block9" id="9" style="height:1200px;display: none;">
+		<h3>这是标题</h3>
+		第9个模块
+	</section>
+</div>
+
+
+<!-- lib begin -->
+<script src="js/lib/zepto.js"></script>
+<script src="js/lib/iscroll.js"></script>
+<script src="js/lib/fastclick.js"></script>
+<script>
+FastClick.attach(document.body);
+</script>
+<!-- lib end -->
+
+<script src="js/topnav.js"></script>
+<script>
+$(function(){
+	
+	//测试代码逻辑
+	var arr_html = [
+		'<li><a href="#"><span>回到顶部</span></a></li>',
+		'<li><a href="#1" title=""><span>11111</span></a></li>',
+		'<li><a href="http://www.baidu.com" title=""><span>百度</span></a></li>',
+		'<li><a href="#2" title=""><span>22222</span></a></li>',
+		'<li><a href="#3" title=""><span>3333</span></a></li>',
+		'<li><a href="#4" title=""><span>4444</span></a></li>',
+		'<li><a href="#error" title=""><span>error</span></a></li>',
+		'<li><a href="#5" title=""><span>55555</span></a></li>',
+		'<li><a href="#6" title=""><span>6666</span></a></li>',
+		'<li><a href="#7" title=""><span>7777</span></a></li>',
+		'<li><a href="#8" title=""><span>8888</span></a></li>',
+		'<li><a href="#12" title=""><span>不存在的锚点</span></a></li>'
+	];
+
+	var html = '';
+	for (var i = 0, len = arr_html.length; i < len; i++) {
+		html += arr_html[i];
+	};
+
+	$('#navscroll').find('ul').append(html);
+
+	//初始化上导航
+	$('.m_nav').mnav();
+
+})
+
+</script>
+
+</body>
+</html>
