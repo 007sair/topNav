@@ -115,8 +115,7 @@
 				if (_left + $li.width() > _this.$body.width() - _this.$openBtn.width()) { //超过一行的li统一添加className
 					$li.addClass('li-wrap')
 				};
-
-				if (hash.indexOf('#') > -1 && $(hash).length > 0) {
+				if (hash && hash.indexOf('#') > -1 && $(hash).length > 0) {
 					$(hash).addClass(_this.opt.className);
 					_this.aAnchorID.push($(hash).attr('id'));	//创建真实锚点元素的id数组
 				};
@@ -151,7 +150,7 @@
 			this.arr_anchorPos = [];
 			this.$li.each(function(index, el) {
 				var $li = $(this),
-					hash = $li.find('a').attr('href'),
+					hash = $li.find('a').attr('href') || '',
 					id = hash.split('#')[1];
 
 				if (hash.indexOf('#') > -1 && _this.isAnchor(hash)) { //是锚点链接 && 在当前页面内匹配到锚点id
@@ -282,7 +281,8 @@
 			var _this = this,
 				curTop = _this.iCurTop + _this.iHeight + this.opt.top, //_this.iHeight+this.opt.top是为了校验wap的高度
 				floor = _this.getIndex(curTop, _this.arr_anchorPos),	//当前页面滚动到的楼层  -1:没有这个楼层
-				curIndex = -1;	//滚动到的锚点元素（范围为所有li的index位置）
+				curIndex = -1; //滚动到的锚点元素（范围为所有li的index位置）
+			var lastIndex = 0; //出现错误链接时约定li的最终索引
 
 			this.$li.each(function(index, el) {
 				var $li = $(this),
@@ -292,8 +292,10 @@
 
 				var oReg = /module\/index\/\d+/g;
 				if (floor === -1) { //没有楼层
-					//li的href为#或者链接与本页链接匹配时取实际链接  否则为0
-					curIndex = (hash === '#' || window.location.href.indexOf(oReg.exec(hash)) > -1) ? index : 0;
+					/**
+					 * 当hash出现#或者链接为与当前页面链接匹配时 将当前索引赋值给lastIndex 否则为0
+					 */
+					curIndex = (hash === '#' || window.location.href.indexOf(oReg.exec(hash)) > -1) ? lastIndex = index : lastIndex;
 				}
 				if (floor == trueIndex) { //楼层等于li的有效锚点索引
 					curIndex = index;

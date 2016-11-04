@@ -28,7 +28,19 @@
 		<nav class="m_nav">
 			<div class="m_iscoll" id="navscroll">
 	            <ul>
-	            	<!-- 代码在从数组中被打乱插入 -->
+	            	<li><span>sss</span></li>
+					<li><a href="#"><span>回到顶部</span></a></li>
+					<li><a href="#1" title=""><span>11111</span></a></li>
+					<li><a href="http://www.baidu.com" title=""><span>百度</span></a></li>
+					<li><a href="#2" title=""><span>22222</span></a></li>
+					<li><a href="#3" title=""><span>3333</span></a></li>
+					<li><a href="#4" title=""><span>4444</span></a></li>
+					<li><a href="#error" title=""><span>error</span></a></li>
+					<li><a href="#5" title=""><span>55555</span></a></li>
+					<li><a href="#6" title=""><span>6666</span></a></li>
+					<li><a href="#7" title=""><span>7777</span></a></li>
+					<li><a href="#8" title=""><span>8888</span></a></li>
+					<li><a href="#12" title=""><span>不存在的锚点</span></a></li>
 	            </ul>
 	            <a href="javascript:;" class="openbtn"></a>
 	        </div>
@@ -97,29 +109,6 @@ FastClick.attach(document.body);
 <script>
 $(function(){
 	
-	//测试代码逻辑
-	var arr_html = [
-		'<li><a href="#"><span>回到顶部</span></a></li>',
-		'<li><a href="#1" title=""><span>11111</span></a></li>',
-		'<li><a href="http://www.baidu.com" title=""><span>百度</span></a></li>',
-		'<li><a href="#2" title=""><span>22222</span></a></li>',
-		'<li><a href="#3" title=""><span>3333</span></a></li>',
-		'<li><a href="#4" title=""><span>4444</span></a></li>',
-		'<li><a href="#error" title=""><span>error</span></a></li>',
-		'<li><a href="#5" title=""><span>55555</span></a></li>',
-		'<li><a href="#6" title=""><span>6666</span></a></li>',
-		'<li><a href="#7" title=""><span>7777</span></a></li>',
-		'<li><a href="#8" title=""><span>8888</span></a></li>',
-		'<li><a href="#12" title=""><span>不存在的锚点</span></a></li>'
-	];
-
-	var html = '';
-	for (var i = 0, len = arr_html.length; i < len; i++) {
-		html += arr_html[i];
-	};
-
-	$('#navscroll').find('ul').append(html);
-
 	//初始化上导航
 	$('.m_nav').mnav();
 
