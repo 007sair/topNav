@@ -78,7 +78,9 @@
 
 		this.WINDOW_WIDTH = $(window).width();
 		this.WINDOW_HEIGHT = $(window).height();
+		this.OPEN_BTN_WIDTH = 43;
 
+		this.isWrap = this.isUlWrap();
 		this.isFixed = 0;	//是否定位
 		this.aAnchorID = [];  //锚点元素的id集合，先遍历导航li的id，根据此id判断页面内的真实锚点
 		this.activeLI = null;
@@ -102,9 +104,11 @@
 			this.$ele.parent().after(this.$mask);
 
 			//如果导航li过多，显示更多按钮
-			if (this.isUlWrap()) {
+			if (this.isWrap) {
 				this.$openBtn.show();
-			};
+			} else {
+				window.myScroll.destroy()
+			}
 
 			//给锚点模块添加className
 			this.$li.each(function(index, el) {
@@ -258,14 +262,23 @@
 
 			});
 
-			//点击更多
-			this.$openBtn.on('click', function() {
+			function toggle() {
 				if (_this.$ele.data('open') == 1) {
 					_this.collapse();
 				}else{
 					_this.expand();
 				}
+			}
+
+			//点击更多
+			this.$openBtn.on('click', function() {
+				toggle();
 			});
+
+			this.$mask.on('click', function() {
+				toggle();
+			});
+
 
 			//滚动方向
 			var upflag = 1;
@@ -381,8 +394,6 @@
 				window.scrollTo(x, st - dis);
 			}
 			move();
-			
-
 		},
 		swipeTo: function(index) { //导航滚动到index位置  index为所有li的索引
 			var _this = this,
@@ -395,7 +406,7 @@
 				index = _this.getCustomData(_this.activeLI.data('anchors')).index;
 			}
 			$li.addClass('active').siblings().removeClass('active');
-			window.myScroll.scrollToElement("li:nth-child(" + (index + 1) + ")", 200, true);
+			this.isWrap && window.myScroll.scrollToElement("li:nth-child(" + (index + 1) + ")", 200, true);
 			//滚动结束后要重置当前选中的li
 			_this.activeLI = null;
 		},
@@ -442,9 +453,8 @@
 			return str
 		},
 		isUlWrap: function(){  //选项卡个数是否超过一行
-			var iUl = this.$ul.width(),
-				iBtn = this.$openBtn.width();
-			if (iUl - iBtn > this.WINDOW_WIDTH) {
+			var iUl = this.$ul.width() - this.OPEN_BTN_WIDTH;
+			if (iUl > this.WINDOW_WIDTH) {
 				return true;
 			}
 			return false;
