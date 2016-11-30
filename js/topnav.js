@@ -115,7 +115,7 @@
 				if (_left + $li.width() > _this.$body.width() - _this.$openBtn.width()) { //超过一行的li统一添加className
 					$li.addClass('li-wrap')
 				};
-				if (hash && hash.indexOf('#') > -1 && $(hash).length > 0) {
+				if (hash && hash.indexOf('#') == 0 && $(hash).length > 0) {
 					$(hash).addClass(_this.opt.className);
 					_this.aAnchorID.push($(hash).attr('id'));	//创建真实锚点元素的id数组
 				};
@@ -220,27 +220,42 @@
 
 			//导航锚点点击事件
 			this.$eleChild.on('click', 'li', function(index, el) {
+
 				//每个锚点模块的top会随着懒加载发生变化 点击触发前先更新所有按钮的数据
 				_this.setCustomData();
 
 				var $li = $(this),
 					index = $li.index(),
 					data = $li.data('anchors'),
-					top = _this.getCustomData(data).top - _this.opt.top;
+					top = _this.getCustomData(data).top - _this.opt.top,
+					href = $li.find('a').attr('href');
 
 				_this.activeLI = $li;
-
 				$li.addClass('active').siblings().removeClass('active');
 
-				if (typeof top !== 'undefined' && top) {
-					setTimeout(function() {
-						if (_this.$ele.data('open') == 1) {
-							//如果展开，点击后就收起
-							_this.collapse();
+				if (typeof href === 'undefined') {
+					console.log('href为未知错误类型')
+					return false
+				};
+
+				if (href.indexOf('#') == 0) { //锚点类型
+					if (_this.isAnchor(href)) { //有效锚点
+						setTimeout(function() {
+							if (_this.$ele.data('open') == 1) { //如果展开，点击后就收起
+								_this.collapse();
+							}
+							_this.scrollYTo(0, top);
+						}, 30);
+					} else {
+						if (href === '#') {
+							document.body.scrollTop && _this.scrollYTo(0, 0);
+						} else {
+							console.log(href + '：error anchor')
 						}
-						_this.scrollYTo(0, top);
-					}, 30);
+					}
+					return false
 				}
+
 			});
 
 			//点击更多
@@ -352,6 +367,9 @@
 				target = y - this.iHeight + 2,	//需要移动到的目标位置
 				dis;
 
+			//禁止a的默认行为后需要加这个来完成跳转
+			window.scrollTo(x, y + 100);
+
 			function move() {
 				rafID = requestAnimationFrame(move);
 				var st = $(window).scrollTop();
@@ -363,6 +381,8 @@
 				window.scrollTo(x, st - dis);
 			}
 			move();
+			
+
 		},
 		swipeTo: function(index) { //导航滚动到index位置  index为所有li的索引
 			var _this = this,
