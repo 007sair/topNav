@@ -79,6 +79,7 @@
 		this.WINDOW_WIDTH = $(window).width();
 		this.WINDOW_HEIGHT = $(window).height();
 		this.OPEN_BTN_WIDTH = 43;
+		this.BODY_HEIGHT = this.$body.height();
 
 		this.isWrap = this.isUlWrap();
 		this.isFixed = 0;	//是否定位
@@ -99,8 +100,7 @@
 			} catch (e) {
 				console.log(e);
 				return false;
-			}	
-
+			}
 			this.$ele.parent().after(this.$mask);
 
 			//如果导航li过多，显示更多按钮
@@ -167,6 +167,7 @@
 					_this.arr_anchorPos.push(top);
 				}
 			});
+			console.log('setCustomData')
 		},
 		getCustomData: function(str){  // 1|2|3 -> obj.id=1, obj.index=2, obj.trueIndex=3
 			if (typeof str !== 'string') return false;
@@ -193,7 +194,10 @@
 			var stop = _this.debounce(function() {
 				// console.log('debounce');
 				_this.scrollStop();
-				_this.setCustomData();
+				if (_this.BODY_HEIGHT !== _this.$body.height()) { //判断body高度发生变化时才去更新数据
+					_this.setCustomData(); //锚点top会随懒加载图片高度bug发生偏移  需触发更新按钮的数据
+					_this.BODY_HEIGHT = _this.$body.height();
+				};
 				_this.$body.removeClass('disable-event');
 			}, 50);
 
@@ -211,22 +215,20 @@
 					_this.collapse();
 					_this._static();
 				}
-				stop()
+				stop();
 			}
 
 			//第一次打开页面时页面的scrollTop不一定为0且不一定没有锚点 需初始化一下当前导航切换
 			fnScroll();
 
 			$(window).scroll(function(){
+				console.log('window scroll')
 				// requestAnimationFrame(fnScroll);
 				fnScroll()
 			});
 
 			//导航锚点点击事件
 			this.$eleChild.on('click', 'li', function(index, el) {
-
-				//每个锚点模块的top会随着懒加载发生变化 点击触发前先更新所有按钮的数据
-				_this.setCustomData();
 
 				var $li = $(this),
 					index = $li.index(),
